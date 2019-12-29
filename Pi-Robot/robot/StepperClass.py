@@ -5,7 +5,7 @@ Fred. T. Dunaway
 
 import RPi.GPIO as GPIO
 import time
-import stepper_constants
+import stepper_constants as sc
 
 class Stepper:
     # Spec sheet may give a stride angle or the number of degrees rotation for a single pulse.
@@ -13,7 +13,8 @@ class Stepper:
     # i.e. 360/5.625 = 64  
     def __init__(self, GPIOpins = [12, 16, 20, 21], stepperMotorModel = '28BYJ-48'):
         self.GPIOpins = GPIOpins
-        self.oneRevSteps = StepperMotors[stepperMotorModel]['oneRevSteps']
+        self.oneRevSteps = sc.StepperMotors[stepperMotorModel]['oneRevSteps']
+        self.maxRevsSec = sc.StepperMotors[stepperMotorModel]['maxRevSec']
         
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
@@ -25,18 +26,21 @@ class Stepper:
         # Define advance sequence
         # as shown in manufacturers datasheet
         # this is for a ROHS 28BYJ-48
-        self.Seq = StepperMotors[stepperMotorModel]['sequence']
+        self.Seq = sc.StepperMotors[stepperMotorModel]['sequence']
         
-        self.StepCount = len(Seq)
+        self.StepCount = len(self.Seq)
          
         GPIO.setup(self.coil_A_1_pin, GPIO.OUT)
         GPIO.setup(self.coil_A_2_pin, GPIO.OUT)
         GPIO.setup(self.coil_B_1_pin, GPIO.OUT)
         GPIO.setup(self.coil_B_2_pin, GPIO.OUT)
 
-    def turn_n_revolutions(self, nRevs, direction=FORWARD_DIRECTION, revsPerSec):
-        delay = 1/(revsPerSec*self.oneRevSteps)
-        steps = nRevs * self.oneRevSteps
+    def turn_n_revolutions(self, nRevs=0, direction=sc.FORWARD_DIRECTION, revsPerSec=0):
+        if revsPerSec > self.maxRevsSec:
+            print('Rev limiting to {0} revs/sec'.format(self.maxRevsSec))
+            revsPerSec = self.maxRevsSec
+        delay = 1/(revsPerSec*self.oneRevSteps * self.StepCount * 8)
+        steps = int(nRevs * self.oneRevSteps * self.StepCount)
         if direction:
             self.forward(delay, steps)
         else:
@@ -51,12 +55,12 @@ class Stepper:
 #Note:  delay is a float holding the number of seconds.  the sleep function is not highly accurate
     def forward(self, delay, steps):
         for i in range(steps):
-            for j in range(StepCount):
+            for j in range(self.StepCount):
                 self.setStep(self.Seq[j][0], self.Seq[j][1], self.Seq[j][2], self.Seq[j][3])
                 time.sleep(delay)
      
     def backwards(self, delay, steps):
         for i in range(steps):
-            for j in reversed(range(StepCount)):
+            for j in reversed(range(self.StepCount)):
                 self.setStep(self.Seq[j][0], self.Seq[j][1], self.Seq[j][2], self.Seq[j][3])
                 time.sleep(delay)

@@ -12,6 +12,7 @@ StepperMotors = {'28BYJ-48': {'sequence': [[1,0,0,1],
                                [0,0,1,0],
                                [0,0,1,1],
                                [0,0,0,1]],
-                               'oneRevSteps': 64
+                               'oneRevSteps': 64,
+                               'maxRevSec': 0.3,
                                }
        }
