@@ -16,12 +16,10 @@ Current work is to create base classes that will handle distance functions, move
 *  Bread board
 *  Jumper wires 
 
-## GPIO pin out.
-Pinout of Raspberry PI:
-<https://www.raspberrypi.org/documentation/usage/gpio/>
-
 ###Raspberry Pi connections
+
 Pin out:
+
 | Physical pin | BCM/GPIO | Connected to                    |
 |--------------|----------|---------------------------------|
 | 1            |          | DS18b20 temperature: VCC (3.3V) |
@@ -43,3 +41,6 @@ Pin out:
 | 40           | GPIO21   | Stepper Coil B-2  |
 
 Note: Power for the stepper motor and ultrasonic sensor come from an external source due to power limits of the Raspberry Pi.
+
+Pinout of Raspberry PI:
+<https://www.raspberrypi.org/documentation/usage/gpio/>
