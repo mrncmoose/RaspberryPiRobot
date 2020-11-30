@@ -13,11 +13,16 @@ def turn(stepper, revs, direction, revsSec):
 if __name__ == '__main__':
     #Use default pin and steps/one rev values
     stepper1 = Stepper()
-    print('Starting stepper thread')
-    t = threading.Thread(target=turn, args=(stepper1, 1.0, FORWARD_DIRECTION, 0.35))
-    t.start()
-    print('Done launching thread')
-#    stepper1.turn_n_revolutions(nRevs=0.25, direction=sc.FORWARD_DIRECTION, revsPerSec=5)
-#     print("Backward.")
-#     stepper1.turn_n_revolutions(nRevs=0.5, direction=sc.REVERSE_DIRECTION, revsPerSec=2)
+#     print('Starting stepper thread')
+#     t = threading.Thread(target=turn, args=(stepper1, 1.0, FORWARD_DIRECTION, 0.35))
+#     t.start()
+#     print('Done launching thread')
+    print('Forward')
+    stepper1.turn_n_revolutions(nRevs=0.25, direction=FORWARD_DIRECTION, revsPerSec=0.3)
+    print("Backward.")
+    stepper1.turn_n_revolutions(nRevs=0.5, direction=REVERSE_DIRECTION, revsPerSec=0.3)
+    print('90 degrees forward')
+    stepper1.turn_n_degrees(90, FORWARD_DIRECTION)
+    print('90 degrees backward')
+    stepper1.turn_n_degrees(90, REVERSE_DIRECTION)
     

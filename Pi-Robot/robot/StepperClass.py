@@ -5,7 +5,7 @@ Fred. T. Dunaway
 
 import RPi.GPIO as GPIO
 import time
-from stepper_constants import *
+import stepper_constants as sc
 
 class Stepper:
     # Spec sheet may give a stride angle or the number of degrees rotation for a single pulse.
@@ -13,8 +13,8 @@ class Stepper:
     # i.e. 360/5.625 = 64  
     def __init__(self, GPIOpins = [12, 16, 20, 21], stepperMotorModel = '28BYJ-48'):
         self.GPIOpins = GPIOpins
-        self.oneRevSteps = StepperMotors[stepperMotorModel]['oneRevSteps']
-        self.maxRevsSec = StepperMotors[stepperMotorModel]['maxRevSec']
+        self.oneRevSteps = sc.StepperMotors[stepperMotorModel]['oneRevSteps']
+        self.maxRevsSec = sc.StepperMotors[stepperMotorModel]['maxRevSec']
         
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
@@ -26,7 +26,7 @@ class Stepper:
         # Define advance sequence
         # as shown in manufacturers datasheet
         # this is for a ROHS 28BYJ-48
-        self.Seq = StepperMotors[stepperMotorModel]['sequence']
+        self.Seq = sc.StepperMotors[stepperMotorModel]['sequence']
         
         self.StepCount = len(self.Seq)
          
@@ -35,7 +35,16 @@ class Stepper:
         GPIO.setup(self.coil_B_1_pin, GPIO.OUT)
         GPIO.setup(self.coil_B_2_pin, GPIO.OUT)
 
-    def turn_n_revolutions(self, nRevs=0, direction=FORWARD_DIRECTION, revsPerSec=0):
+    def turn_n_degrees(self, nDeg = 0, direction = sc.FORWARD_DIRECTION):
+        delay = 1/(self.maxRevsSec*self.oneRevSteps * self.StepCount * 8)
+        steps = int((self.oneRevSteps * self.StepCount)*(nDeg/360))
+        if direction:        
+            self.forward(delay, steps)
+        else:
+            self.backwards(delay, steps)
+
+    
+    def turn_n_revolutions(self, nRevs=0, direction=sc.FORWARD_DIRECTION, revsPerSec=0):
         if revsPerSec > self.maxRevsSec:
             print('Rev limiting to {0} revs/sec'.format(self.maxRevsSec))
             revsPerSec = self.maxRevsSec
