@@ -10,3 +10,5 @@ How To article from Adafruit:  <https://learn.adafruit.com/neopixels-on-raspberr
 
 Do not run in virtual Python environment.
 
+## Hello world.py
+a trival learning program
