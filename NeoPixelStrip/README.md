@@ -12,3 +12,9 @@ Do not run in virtual Python environment.
 
 ## Hello world.py
 a trival learning program
+
+## Raspberry Pi info
+raspberrypi.lan (192.168.1.21)
+raspberry.local
+user:  pi
+pass:  raspberry
