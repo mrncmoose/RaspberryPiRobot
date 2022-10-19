@@ -39,14 +39,12 @@ Ground or - to ground and pin 6 on the Pi
 
 ## Use
 
-1 Open a terminal and type:  ssh pi@192.168.1.21
-1 type the password when prompted
-1 cd Noepixels
-1 sudo python3 testNeo.py
+1. Open a terminal and type:  ssh pi@192.168.1.21
+1. type the password when prompted
+1. cd Noepixels
+1. sudo python3 testNeo.py
 
 ## To shutdown
 
-1 control+c to stop the program running
-1 sudo shutdown now
-
-
+1. control+c to stop the program running
+1. sudo shutdown now
